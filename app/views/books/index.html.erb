@@ -24,12 +24,24 @@
                   <% if book.user.profile_image.attached? %>
                     <%= image_tag book.user.get_profile_image(50, 50), class: "img-fluid" %>
                   <% else %>
-                    <%= image_tag 'no-image', size: "50x50", class: "img-fluid" %>
+                    <%= image_tag 'no-image.jpg', size: "50x50", class: "img-fluid" %>
                   <% end %>
                 <% end %>
               </td>
               <td><%= link_to book.title, book_path(book), class: "text-primary" %></td>
               <td><%= book.body %></td>
+              <td>
+                <% if book.favorited_by?(current_user) %>
+                  <%= link_to book_favorites_path(book), method: :delete do %>
+                    <i class="fas fa-heart text-danger"><%= book.favorites.count %></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to book_favorites_path(book), method: :post do %>
+                    <i class="fas fa-heart"><%= book.favorites.count %></i>
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= " コメント数：#{book.book_comments.count}" %></td>
             </tr>
           <% end %>
           </tbody>
